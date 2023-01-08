@@ -1,18 +1,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct TNode
+typedef struct TITEM
 {
-    struct TNode *next;
+    struct TITEM *next;
     int data;
-} TNODE;
+} TITEM;
 
-TNODE *readInput(int *length, TNODE *head)
+TITEM *readInput(int *length, TITEM *head)
 {
     *length = 0;
 
     int data;
-    TNODE *temp = head;
+    TITEM *temp = head;
 
     while (scanf("%d", &data) == 1)
     {
@@ -25,7 +25,7 @@ TNODE *readInput(int *length, TNODE *head)
         }
         else
         {
-            TNODE *newNode = (TNODE *)malloc(sizeof(TNODE));
+            TITEM *newNode = (TITEM *)malloc(sizeof(TITEM));
             newNode->data = data;
             newNode->next = NULL;
             temp->next = newNode;
@@ -42,9 +42,9 @@ TNODE *readInput(int *length, TNODE *head)
     return head;
 }
 
-void printTree(TNODE *head)
+void printList(TITEM *head)
 {
-    TNODE *temp = head;
+    TITEM *temp = head;
     while (temp)
     {
         printf("%d ", temp->data);
@@ -53,21 +53,19 @@ void printTree(TNODE *head)
     printf("\n");
 }
 
-void freeTree(TNODE *l)
+void freeList(TITEM *l)
 {
-    TNODE *head = l;
-    TNODE *temp = head->next;
-    while (head)
+    while (l)
     {
-        free(head);
-        head = temp;
-        temp = temp->next;
+        TITEM * temp = l->next;
+        free(l);
+        l = temp;
     }
 }
 
 int main()
 {
-    TNODE *head = (TNODE *)malloc(sizeof(TNODE));
+    TITEM *head = (TITEM *)malloc(sizeof(TITEM));
     int length = 0;
 
     printf("Insert a sequence of numbers\n");
@@ -80,11 +78,9 @@ int main()
         return 1;
     }
 
-    printTree(head);
-
     printf("Choose sorting algorithm for a linked list\n");
     printf("1 - Bubble sort\n2 - Merge sort\n");
 
-    freeTree(head);
+    freeList(head);
     return 0;
 }
