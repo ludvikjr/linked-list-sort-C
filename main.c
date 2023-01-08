@@ -52,7 +52,19 @@ void printTree(TNODE *head)
     printf("\n");
 }
 
+void freeTree(TNODE *head)
+{
+    TNODE *temp = head->next;
+    while (head)
+    {
+        free(head);
+        head = temp;
+        temp = head->next;
+    }
+}
+
 int main()
 {
+
     printf("Choose sorting algorithm for a linked list");
 }
