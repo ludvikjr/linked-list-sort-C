@@ -1,18 +1,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct TNODE
+typedef struct TNode
 {
+    struct TNode *next;
     int data;
-    TNODE *next;
 } TNODE;
 
-int readInput(int *length, TNODE *head)
+TNODE *readInput(int *length, TNODE *head)
 {
     *length = 0;
 
     int data;
-    TNODE *temp = NULL;
+    TNODE *temp = head;
 
     while (scanf("%d", &data) == 1)
     {
@@ -30,6 +30,7 @@ int readInput(int *length, TNODE *head)
             newNode->next = NULL;
             temp->next = newNode;
             temp = newNode;
+            (*length)++;
         }
     }
 
@@ -38,7 +39,7 @@ int readInput(int *length, TNODE *head)
         return 0;
     }
 
-    return 1;
+    return head;
 }
 
 void printTree(TNODE *head)
@@ -52,19 +53,38 @@ void printTree(TNODE *head)
     printf("\n");
 }
 
-void freeTree(TNODE *head)
+void freeTree(TNODE *l)
 {
+    TNODE *head = l;
     TNODE *temp = head->next;
     while (head)
     {
         free(head);
         head = temp;
-        temp = head->next;
+        temp = temp->next;
     }
 }
 
 int main()
 {
+    TNODE *head = (TNODE *)malloc(sizeof(TNODE));
+    int length = 0;
 
-    printf("Choose sorting algorithm for a linked list");
+    printf("Insert a sequence of numbers\n");
+
+    head = readInput(&length, head);
+
+    if (!head)
+    {
+        printf("Incorrect input\n");
+        return 1;
+    }
+
+    printTree(head);
+
+    printf("Choose sorting algorithm for a linked list\n");
+    printf("1 - Bubble sort\n2 - Merge sort\n");
+
+    freeTree(head);
+    return 0;
 }
